@@ -1,14 +1,15 @@
 import json
 tasks = {}
+task_counter = 0
 
 # Funcion para agregar una tarea
 def add_task ():
+    global task_counter
     name_task = input("nombre de la tarea: ")
     importance = int(input("Nivel de imporacia (1-5): "))
-    complete = False
-    new_task = {"Nombre" : name_task, "Importancia" : importance, "Estado": complete}
-    count = len(tasks) + 1
-    tasks.update({"Tarea " + str(count) : new_task})
+    new_task = {"Nombre" : name_task, "Importancia" : importance, "Estado": False }
+    task_counter += 1
+    tasks.update({"Tarea " + str(task_counter) : new_task})
 
 # Funcion para ver las tareas
 def view_tasks():
@@ -28,27 +29,48 @@ def delete_task():
     else:
         print("La tarea no existe")
 
+# Completar Tarea
 def complete_task():
-    pass
+    for key, value in tasks.items():
+        print(f'{key}: {value["Nombre"]}')
+    task_complete = input("¿Que tarea completaste?: ")
+    if task_complete in tasks:
+        tasks[task_complete]["Estado"] = True
+    else:
+        print("La tarea no existe")
+    
+# def edit_task():
+#    pass
 
-def edit_task():
-    pass
+# def fliter_tasks():
+#    pass
 
-def fliter_tasks():
-    pass
-
-def save_task():
-    with open("datos.txt", "w") as archivo:
-        json.dump(tasks, archivo, indent=4)
+# def save_task():
+#    pass
 
 
-def load_task():
-    pass
+# def load_task():
+#    pass
 
-
-
-add_task()
-add_task()
-view_tasks()
-delete_task()
-view_tasks()
+while True:
+    print("\n--- ZeroProductivity ---")
+    print("1. Agregar tarea")
+    print("2. Ver tareas")
+    print("3. Completar tarea")
+    print("4. Eliminar tarea")
+    print("5. Salir")
+    
+    option = input("Elige una opción: ")
+    
+    if option == "1":
+        add_task()
+    elif option == "2":
+        view_tasks()
+    elif option == "3":
+        complete_task()
+    elif option == "4":
+        delete_task()
+    elif option == "5":
+        break
+    else:
+        print(f"{option} no es una opcion valida")
